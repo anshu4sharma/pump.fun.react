@@ -29,7 +29,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         </div>
         <div className="flex-1 overflow-y-auto">
           <div className="p-4">
-            <NavigationLinks />
+            <NavigationLinks onClose={onClose} />
           </div>
         </div>
         <div className="p-4 border-t border-gray-800">

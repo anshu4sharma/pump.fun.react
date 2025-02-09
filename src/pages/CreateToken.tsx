@@ -1,6 +1,6 @@
 const CreateToken = () => {
   return (
-    <main className="lg:pl-64 pt-16 lg:pt-0">
+    <main className="pt-16 lg:pt-0">
       <div className="p-4 lg:p-8">
         <div className="flex justify-center min-h-[calc(100vh-5rem)]">
           <div className="w-full max-w-md pt-4 lg:pt-8">
