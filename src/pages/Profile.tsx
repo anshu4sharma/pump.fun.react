@@ -25,9 +25,9 @@ const Profile = () => {
                 <Wallet className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Token</span> Balances
               </Tabs.Trigger>
-              
+
               <Tabs.Trigger
-                value="deployed" 
+                value="deployed"
                 className="inline-flex items-center justify-center text-white whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm flex-1 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
               >
                 <Package className="w-4 h-4 mr-2" />
@@ -69,3 +69,35 @@ const Profile = () => {
 };
 
 export default Profile;
+
+export const WalletNotConnected = () => {
+  return (
+    <main className="pt-16 lg:pt-0">
+      <div className="p-4 lg:p-8">
+        <div className="flex items-center justify-center h-[calc(100vh-12rem)]">
+          <div className="text-center space-y-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-wallet-minimal w-12 h-12 text-gray-400 mx-auto"
+            >
+              <path d="M17 14h.01"></path>
+              <path d="M7 7h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14"></path>
+            </svg>
+            <h2 className="text-xl text-gray-400">
+              Please connect your wallet to continue
+            </h2>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+};
+
