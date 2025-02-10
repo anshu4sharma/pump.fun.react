@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { Search } from "lucide-react";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 const TokenGrid: FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-2">
@@ -16,9 +17,9 @@ const TokenGrid: FC = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           </div>
         </div>
-        <div className="flex items-center gap-2 w-full md:flex-row flex-col">
-          <span className="text-sm text-gray-400">Sort by:</span>
-          <select className="flex h-10 w-full md:w-[222px] rounded-md border px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[#1c1c1c] border-gray-700 text-white">
+        <div className="flex md:justify-end items-center gap-4 w-full md:flex-row flex-col px-4 md:px-6">
+          <span className="text-sm font-medium text-gray-400">Sort by:</span>
+          <select className="flex h-10 w-full md:w-[240px] rounded-lg border px-4 py-2 text-sm font-medium ring-offset-background focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[#1c1c1c] border-gray-700 text-white hover:border-gray-600 transition-colors">
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
             <option value="highest-market-cap">Highest Market Cap</option>
@@ -28,8 +29,11 @@ const TokenGrid: FC = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[...Array(8)].map((_, index) => (
-          <Link
-            to="/tokens"
+          <div
+            key={index}
+            onClick={() => {
+              navigate("/tokens");
+            }}
             className="rounded-lg border text-card-foreground shadow-sm bg-[#1c1c1c] hover:bg-[#252525] transition-colors border-gray-700 p-4 cursor-pointer"
           >
             <div className="space-y-4">
@@ -144,7 +148,7 @@ const TokenGrid: FC = () => {
                 </a>
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>
