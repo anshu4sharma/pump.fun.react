@@ -11,7 +11,7 @@ const Sidebar: FC = () => {
         <Logo />
       </div>
       <div className="px-4">
-        <NavigationLinks />
+        <NavigationLinks onClose={() => {}} />
       </div>
       <div className="flex-1" />
       <div className="mb-4 flex justify-center gap-6">

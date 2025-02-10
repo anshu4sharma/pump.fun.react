@@ -7,7 +7,7 @@ import MobileMenu from "./components/MobileMenu";
 import CreateToken from "./pages/CreateToken";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-
+import Tokens from "./pages/Tokens";
 const App: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -34,6 +34,7 @@ const App: React.FC = () => {
             <Route path="/" index element={<Home />} />
             <Route path="/create-token" element={<CreateToken />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/tokens" element={<Tokens />} />
           </Routes>
         </main>
       </div>

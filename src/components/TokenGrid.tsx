@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Search } from "lucide-react";
+import { Link } from "react-router";
 
 const TokenGrid: FC = () => {
   return (
@@ -25,12 +26,10 @@ const TokenGrid: FC = () => {
           </select>
         </div>
       </div>
-      {/* Add token grid items here */}
-      {/* This is a placeholder - you'll want to add actual token data */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[...Array(8)].map((_, index) => (
-          <div
-            key={index}
+          <Link
+            to="/tokens"
             className="rounded-lg border text-card-foreground shadow-sm bg-[#1c1c1c] hover:bg-[#252525] transition-colors border-gray-700 p-4 cursor-pointer"
           >
             <div className="space-y-4">
@@ -77,9 +76,75 @@ const TokenGrid: FC = () => {
                 <span>Deployed by:</span>
                 <span>0x5b4a...4e97</span>
               </div>
-              <div className="flex items-center gap-3 pt-2" />
+              <div className="flex items-center gap-3 pt-2">
+                <a
+                  href="https://google.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-gray-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-globe w-5 h-5"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                    <path d="M2 12h20"></path>
+                  </svg>
+                </a>
+                <a
+                  href="https://x.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-gray-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-twitter w-5 h-5"
+                  >
+                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                  </svg>
+                </a>
+                <a
+                  href="https://telegram.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-gray-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-message-square w-5 h-5"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </a>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
