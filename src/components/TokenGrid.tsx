@@ -40,7 +40,7 @@ const TokenGrid: FC = () => {
               <div className="flex items-start gap-4">
                 <div className="rounded-full overflow-hidden bg-gray-800 flex-shrink-0 w-[50px] h-[50px]">
                   <img
-                    src="https://ipfs.io/ipfs/QmQ7Dbg7jEKNUx43nhVqE2UqadBPWNmzPgcHmK2EipvhaS"
+                    src={index % 2 === 0 ? "https://ipfs.io/ipfs/QmdZACb4qSoamBnHwFtuvyCAEK6YWzdVnhzXQZnTKSzU5N" : "https://ipfs.io/ipfs/QmQ7Dbg7jEKNUx43nhVqE2UqadBPWNmzPgcHmK2EipvhaS"}
                     alt="Blue Moon"
                     className="w-full h-full object-cover"
                   />

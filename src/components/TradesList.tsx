@@ -40,9 +40,9 @@ const handleScroll = () => {
 useEffect(() => {
   const interval = setInterval(() => {
     if (containerRef.current) {
-      containerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+      containerRef.current.scrollBy({ left: 80, behavior: 'smooth' });
     }
-  }, 800); // Scroll every 1 seconds
+  }, 500); // Scroll every 1 seconds
 
   return () => clearInterval(interval); // Cleanup on unmount
 }, []);
@@ -60,7 +60,7 @@ return (
           <div className="flex items-center justify-between p-3 bg-gray-800 rounded-lg border border-gray-700 w-[320px] hover:border-gray-600 transition-colors hover:bg-gray-700">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-700">
-                <div className="w-full h-full bg-gray-600"></div>
+               <img src={ index % 2 === 0 ? "https://ipfs.io/ipfs/QmdZACb4qSoamBnHwFtuvyCAEK6YWzdVnhzXQZnTKSzU5N" : "https://ipfs.io/ipfs/QmY9onWxhgyKyf8zDHyym2V3UkDDYiTAQCKNGnJuD27XWC"} alt="" />
               </div>
               <div>
                 <div className="flex items-center gap-1">

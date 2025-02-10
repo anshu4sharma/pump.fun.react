@@ -1,5 +1,6 @@
 import { FC } from "react";
 import TokenGrid from "../components/TokenGrid";
+import TradesList from "../components/TradesList";
 
 const Home: FC = () => {
   return (
@@ -18,7 +19,7 @@ const Home: FC = () => {
           </div>
         </div>
         <div className="space-y-6 sm:space-y-8">
-          {/* <TradesList /> */}
+          <TradesList />
           <TokenGrid />
         </div>
       </div>
