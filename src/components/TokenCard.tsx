@@ -2,11 +2,11 @@ interface TokenCardProps {
   name: string;
   symbol: string;
   marketCap: string;
-  status: string;
+  status: string;  
   logoUrl: string;
 }
 
-const TokenCard = ({ name, symbol, marketCap, status, logoUrl }: TokenCardProps) => {
+const TokenCard = ({ name, symbol, marketCap, logoUrl }: TokenCardProps) => {
   return (
     <div className="bg-[#1c1c1c] rounded-lg p-4 border border-gray-800">
       <div className="flex items-center gap-3 mb-4">
