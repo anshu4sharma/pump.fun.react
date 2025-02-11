@@ -4,8 +4,8 @@ const Tokens = () => {
   return (
     <>
       <main className="md:pt-16 lg:pt-0">
-        <div className="p-4 lg:p-8">
-          <a href="/" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent h-10 px-4 py-2 mb-6 text-gray-400 hover:text-white">
+        <div className="p-2 sm:p-4 lg:p-8">
+          <a href="/" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent h-10 px-4 py-2 mb-4 sm:mb-6 text-gray-400 hover:text-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -23,11 +23,11 @@ const Tokens = () => {
             </svg>
             Back to Tokens
           </a>
-          <div className="relative grid gap-6 ">
-            <div className="lg:grid lg:grid-cols-3 lg:gap-6 flex flex-col gap-6">
+          <div className="relative grid gap-4 sm:gap-6">
+            <div className="lg:grid lg:grid-cols-3 lg:gap-6 flex flex-col gap-4 sm:gap-6">
               <div className="col-span-2 rounded-lg border text-card-foreground shadow-sm bg-[#1c1c1c] border-gray-700">
-                <div className="p-4 lg:p-6">
-                  <div className="space-y-4 mb-6">
+                <div className="p-3 sm:p-4 lg:p-6">
+                  <div className="space-y-4 mb-4 sm:mb-6">
                     <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
                       <div className="flex items-start space-x-4">
                         <div className="rounded-full overflow-hidden bg-gray-800 flex-shrink-0 w-[50px] h-[50px]">
@@ -50,37 +50,37 @@ const Tokens = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-4 overflow-x-auto pb-2 lg:pb-0">
+                      <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 lg:pb-0 w-full sm:w-auto">
                         <div className="flex flex-col flex-shrink-0">
                           <div className="text-sm text-gray-400">
                             24h Volume
                           </div>
                           <div className="text-xs font-semibold text-white">
-                            0.00000000 DOGE
+                            {0.00000000.toFixed(6)} DOGE
                           </div>
-                          <div className="text-xs text-gray-500">$0.000000</div>
+                          <div className="text-xs text-gray-500 truncate max-w-[150px]">${0.7976937.toFixed(6)}</div>
                         </div>
                         <div className="flex flex-col flex-shrink-0">
                           <div className="text-sm text-gray-400">24h High</div>
                           <div className="text-xs font-semibold text-green-400">
-                            0.000000000000
+                            {0.000000.toFixed(6)} DOGE
                           </div>
-                          <div className="text-xs text-gray-500">$0.000000</div>
+                          <div className="text-xs text-gray-500 truncate max-w-[150px]">${0.797693134862.toFixed(6)}</div>
                         </div>
                         <div className="flex flex-col flex-shrink-0">
                           <div className="text-sm text-gray-400">24h Low</div>
-                          <div className="text-xs font-semibold text-red-400">
-                            1.7976931348623157e+308
+                          <div className="text-xs font-semibold text-red-400 truncate max-w-[150px]">
+                            ${0.797693134862.toFixed(6)}
                           </div>
                           <div className="text-xs text-gray-500">$∞</div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-6">
+                  <div className="mt-4 sm:mt-6">
                     <div
                       className="w-full"
-                      style={{ height: "min(400px, 60vh)" }}
+                      style={{ height: "min(300px, 50vh)" }}
                     >
                       <div
                         className="tv-lightweight-charts"
@@ -288,13 +288,13 @@ const Tokens = () => {
               </div>
 
               <div className="col-span-1">
-                <div className="rounded-lg border text-card-foreground shadow-sm bg-[#1c1c1c] border-gray-700 w-full top-8">
-                  <div className="p-6">
+                <div className="rounded-lg border text-card-foreground shadow-sm bg-[#1c1c1c] border-gray-700 w-full">
+                  <div className="p-3 sm:p-4 lg:p-6">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-xl font-semibold text-white">BLUE</h3>
                       <div className="text-gray-400">
                         <div className="text-right">
-                          <div>0.000000001677 DOGE</div>
+                          <div>{0.000000001677.toFixed(6)} DOGE</div>
                           <div className="text-xs text-gray-500">
                             ≈ $0.000163
                           </div>
@@ -418,30 +418,30 @@ const Tokens = () => {
               </div>
             </div>
 
-            <div className="rounded-lg border text-card-foreground  shadow-sm bg-[#1c1c1c] border-gray-700">
+            <div className="rounded-lg border text-card-foreground shadow-sm bg-[#1c1c1c] border-gray-700">
               <Tabs.Root defaultValue="comments" className="w-full">
-                <Tabs.List className="flex border-b border-gray-700">
+                <Tabs.List className="flex border-b border-gray-700 overflow-x-auto">
                   <Tabs.Trigger
                     value="comments"
-                    className="flex-1 px-6 py-3 font-medium text-sm transition-colors data-[state=active]:text-blue-400 data-[state=active]:border-b-2 data-[state=active]:border-blue-400 text-gray-400 hover:text-gray-200"
+                    className="flex-1 px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm transition-colors data-[state=active]:text-blue-400 data-[state=active]:border-b-2 data-[state=active]:border-blue-400 text-gray-400 hover:text-gray-200"
                   >
                     Comments
                   </Tabs.Trigger>
                   <Tabs.Trigger
                     value="transactions"
-                    className="flex-1 px-6 py-3 font-medium text-sm transition-colors data-[state=active]:text-blue-400 data-[state=active]:border-b-2 data-[state=active]:border-blue-400 text-gray-400 hover:text-gray-200"
+                    className="flex-1 px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm transition-colors data-[state=active]:text-blue-400 data-[state=active]:border-b-2 data-[state=active]:border-blue-400 text-gray-400 hover:text-gray-200"
                   >
                     Transactions
                   </Tabs.Trigger>
                   <Tabs.Trigger
                     value="holders"
-                    className="flex-1 px-6 py-3 font-medium text-sm transition-colors data-[state=active]:text-blue-400 data-[state=active]:border-b-2 data-[state=active]:border-blue-400 text-gray-400 hover:text-gray-200"
+                    className="flex-1 px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm transition-colors data-[state=active]:text-blue-400 data-[state=active]:border-b-2 data-[state=active]:border-blue-400 text-gray-400 hover:text-gray-200"
                   >
                     Holders
                   </Tabs.Trigger>
                 </Tabs.List>
 
-                <Tabs.Content value="comments" className="p-4">
+                <Tabs.Content value="comments" className="p-3 sm:p-4">
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
@@ -505,13 +505,13 @@ const Tokens = () => {
                   </div>
                 </Tabs.Content>
 
-                <Tabs.Content value="transactions" className="p-4">
+                <Tabs.Content value="transactions" className="p-3 sm:p-4">
                   <div className="text-gray-400 text-sm">
                     No transactions found
                   </div>
                 </Tabs.Content>
 
-                <Tabs.Content value="holders" className="p-4">
+                <Tabs.Content value="holders" className="p-3 sm:p-4">
                   <div className="text-gray-400 text-sm">No holders found</div>
                 </Tabs.Content>
               </Tabs.Root>
