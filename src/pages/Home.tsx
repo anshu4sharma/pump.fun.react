@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router';
 import Logo from '../components/Logo';
 import { motion } from 'framer-motion';
@@ -6,6 +6,38 @@ import pancakeswapLogo from '../assets/partners/pancakeswap.svg';
 import binanceLogo from '../assets/partners/binance.svg';
 import trustwalletLogo from '../assets/partners/trustwallet.svg';
 import metamaskLogo from '../assets/partners/metamask.svg';
+
+const useCountAnimation = (endValue: number, duration: number = 2000) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(0);
+  
+  useEffect(() => {
+    const startTime = Date.now();
+    const startValue = 0;
+    
+    const updateCount = () => {
+      const now = Date.now();
+      const progress = Math.min((now - startTime) / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentCount = Math.floor(startValue + (endValue - startValue) * easeOutQuart);
+      
+      if (countRef.current !== currentCount) {
+        countRef.current = currentCount;
+        setCount(currentCount);
+      }
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateCount);
+      }
+    };
+    
+    requestAnimationFrame(updateCount);
+  }, [endValue, duration]);
+  
+  return count;
+};
 
 const Home: React.FC = () => {
   return (
@@ -15,7 +47,7 @@ const Home: React.FC = () => {
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20" />
       
       {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#13141b]/80 backdrop-blur-lg border-b border-gray-800">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#13141b]/80 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-24">
             {/* Logo */}
@@ -107,7 +139,7 @@ const Home: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative pt-32 lg:pt-40">
+      <div className="relative pt-24 lg:pt-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative z-10">
             <motion.div 
@@ -173,7 +205,42 @@ const Home: React.FC = () => {
             </motion.div>
 
             {/* Featured Brands */}
-            <div className="mt-20 border-t border-gray-800">
+           
+          </div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="relative py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+              Key Features
+            </h2>
+            <p className="text-gray-400 mt-4">
+              Everything you need to launch your token
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 jus">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                className="group p-6 rounded-2xl bg-gradient-to-b from-[#1a1b1e] to-[#1a1b1e]/50 border border-gray-800 hover:border-purple-500/30 transition-all hover:scale-105 backdrop-blur-sm flex flex-col sm:items-center sm:justify-center  cursor-pointer" 
+              >
+                <div className="w-12 h-12 mb-4 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-purple-500/30 transition-all">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                <p className="text-gray-400">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="border-gray-800">
               <div className="py-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 mb-8">
                   Our Partners
@@ -217,43 +284,8 @@ const Home: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="relative py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-              Key Features
-            </h2>
-            <p className="text-gray-400 mt-4">
-              Everything you need to launch your token
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 jus">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="group p-6 rounded-2xl bg-gradient-to-b from-[#1a1b1e] to-[#1a1b1e]/50 border border-gray-800 hover:border-purple-500/30 transition-all hover:scale-105 backdrop-blur-sm flex flex-col items-center justify-center" 
-              >
-                <div className="w-12 h-12 mb-4 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-purple-500/30 transition-all">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Statistics Section */}
-      <div className="relative py-20">
+      <div className="relative py-20 mb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
@@ -264,132 +296,28 @@ const Home: React.FC = () => {
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="group p-6 rounded-2xl bg-gradient-to-b from-[#1a1b1e] to-[#1a1b1e]/50 border border-gray-800 hover:border-purple-500/30 transition-all hover:scale-105 backdrop-blur-sm"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-                  {stat.value}
-                </div>
-                <div className="text-gray-400 mt-2">{stat.label}</div>
-              </motion.div>
-            ))}
+            {stats.map((stat, index) => {
+              const animatedValue = useCountAnimation(stat.value);
+              
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 3, delay: index * 0.5 }}
+                  className="group p-6 rounded-2xl bg-gradient-to-b from-[#1a1b1e] to-[#1a1b1e]/50 border border-gray-800 hover:border-purple-500/30 transition-all hover:scale-105 backdrop-blur-sm"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+                    {stat.prefix}{animatedValue.toLocaleString()}{stat.suffix}
+                  </div>
+                  <div className="text-gray-400 mt-2">{stat.label}</div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
-
-      {/* Call to Action Section */}
-      <div className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-blue-500/5" />
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <motion.div 
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 mb-6">
-              Ready to Launch Your Token?
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12">
-              Join thousands of successful projects that have launched their tokens using our platform.
-            </p>
-            
-            <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-              <Link
-                to="/dashboard"
-                className="group relative px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg font-semibold text-white overflow-hidden transition-all hover:scale-105 flex items-center justify-center w-full md:w-auto min-w-[200px]"
-              >
-                <div className="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors" />
-                <span className="relative flex items-center">
-                  Launch App
-                  <svg 
-                    className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </span>
-              </Link>
-              
-              <Link
-                to="/docs"
-                className="group px-8 py-4 bg-[#1a1b1e] rounded-lg font-semibold text-white border border-gray-800 hover:bg-[#1a1b1e]/80 transition-all hover:scale-105 flex items-center justify-center w-full md:w-auto min-w-[200px]"
-              >
-                <span className="flex items-center">
-                  Read Documentation
-                  <svg 
-                    className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </Link>
-            </div>
-
-            {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
-              <motion.div
-                className="p-6 rounded-2xl bg-gradient-to-b from-[#1a1b1e] to-[#1a1b1e]/50 border border-gray-800 backdrop-blur-sm flex flex-col items-center justify-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Secure Platform</h3>
-                <p className="text-gray-400">Built with industry-leading security standards and regular audits</p>
-              </motion.div>
-
-              <motion.div
-                className="p-6 rounded-2xl bg-gradient-to-b from-[#1a1b1e] to-[#1a1b1e]/50 border border-gray-800 backdrop-blur-sm flex flex-col items-center justify-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Lightning Fast</h3>
-                <p className="text-gray-400">Deploy your token in minutes with our optimized platform</p>
-              </motion.div>
-
-              <motion.div
-                className="p-6 rounded-2xl bg-gradient-to-b from-[#1a1b1e] to-[#1a1b1e]/50 border border-gray-800 backdrop-blur-sm flex flex-col items-center justify-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">24/7 Support</h3>
-                <p className="text-gray-400">Get help anytime with our dedicated support team</p>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Trading Activity Section */}
+      {/* Footer Section */}
       <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
@@ -455,20 +383,28 @@ const features = [
 
 const stats = [
   {
-    value: '10,000+',
+    value: 10000,
     label: 'Tokens Created',
+    prefix: '',
+    suffix: '+'
   },
   {
-    value: '$100M+',
+    value: 100,
     label: 'Total Value Locked',
+    prefix: '$',
+    suffix: 'M+'
   },
   {
-    value: '50,000+',
+    value: 50000,
     label: 'Community Members',
+    prefix: '',
+    suffix: '+'
   },
   {
-    value: '99.9%',
+    value: 99.9,
     label: 'Uptime',
+    prefix: '',
+    suffix: '%'
   },
 ];
 
