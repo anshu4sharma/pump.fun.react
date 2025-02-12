@@ -8,7 +8,7 @@ const Profile = () => {
       <div className="p-4 lg:p-8">
         <div className="p-4 lg:p-8">
           <div className="mb-6 lg:mb-8">
-            <h1 className="text-xl lg:text-2xl font-bold text-white">
+            <h1 className="text-xl lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400">
               My Profile
             </h1>
             <p className="text-sm lg:text-base text-gray-400 mt-1">
@@ -20,7 +20,7 @@ const Profile = () => {
             <Tabs.List className="inline-flex h-10 items-center justify-center rounded-md p-1 text-muted-foreground w-full bg-[#1c1c1c] border-gray-700">
               <Tabs.Trigger
                 value="balances"
-                className="inline-flex items-center justify-center text-white whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm flex-1 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+                className="inline-flex items-center justify-center text-white whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm flex-1 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-400 data-[state=active]:via-blue-400 data-[state=active]:to-indigo-400 data-[state=active]:text-white"
               >
                 <Wallet className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Token</span> Balances
@@ -28,7 +28,7 @@ const Profile = () => {
 
               <Tabs.Trigger
                 value="deployed"
-                className="inline-flex items-center justify-center text-white whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm flex-1 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+                className="inline-flex items-center justify-center text-white whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm flex-1 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-400 data-[state=active]:via-blue-400 data-[state=active]:to-indigo-400 data-[state=active]:text-white"
               >
                 <Package className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Deployed</span> Tokens
@@ -86,12 +86,12 @@ export const WalletNotConnected = () => {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              className="lucide lucide-wallet-minimal w-12 h-12 text-gray-400 mx-auto"
+              className="lucide lucide-wallet-minimal w-12 h-12 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 mx-auto"
             >
               <path d="M17 14h.01"></path>
               <path d="M7 7h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14"></path>
             </svg>
-            <h2 className="text-xl text-gray-400">
+            <h2 className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400">
               Please connect your wallet to continue
             </h2>
           </div>
@@ -100,4 +100,3 @@ export const WalletNotConnected = () => {
     </main>
   );
 };
-

@@ -83,7 +83,8 @@ const CreateToken = () => {
                     <div className="text-sm text-gray-400">
                       <p>Creation Fee: 0.001 ETH</p>
                     </div>
-                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium disabled:opacity-50 h-10" type="submit">
+                    {/* change the button to a gradient button */}
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium disabled:opacity-50 h-10" type="submit">
                       Create Token
                     </button>
                   </div>

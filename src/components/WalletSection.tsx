@@ -21,7 +21,7 @@ const WalletSection: FC = () => {
         <div>
           <button
             onClick={handleConnect}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 text-white font-medium rounded-xl transition-colors"
           >
             <WalletIcon className="w-5 h-5" />
             Connect Wallet
@@ -52,7 +52,7 @@ const WalletSection: FC = () => {
         <button className="w-full flex items-center justify-between px-4 py-2 bg-[#2a2b2e] text-gray-400 rounded-xl hover:bg-[#2a2b2e]/80 transition-colors text-sm">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-yellow-500" />
-            <span>Solana</span>
+            <span>Binance Chain</span>
           </div>
           <CurrencyIcon className="w-4 h-4" />
         </button>
