@@ -1,23 +1,16 @@
-import { FC, useState } from "react";
 import {
   WalletIcon, ExternalLinkIcon, CurrencyIcon
 } from "lucide-react";
-
-const WalletSection: FC = () => {
-  const [isConnected, setIsConnected] = useState(false);
-  const [balance, setBalance] = useState("0.00");
-  const [walletAddress, setWalletAddress] = useState("");
-
+import { ethers } from "ethers";
+const WalletSection = ({ balance, account, connectHandler }: { connectHandler: any, account: any, balance: any }) => {
+  console.log(account, "account");
   const handleConnect = () => {
-    // Wallet connection logic would go here
-    setIsConnected(true);
-    setWalletAddress("7X8w...9Yfk");
-    setBalance("1.45");
+    connectHandler();
   };
 
   return (
     <>
-      {!isConnected ? (
+      {!account ? (
         <div>
           <button
             onClick={handleConnect}
@@ -35,12 +28,13 @@ const WalletSection: FC = () => {
           <div className="bg-[#2a2b2e] p-3 rounded-xl">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-400">Balance</span>
-              <span className="text-white font-medium">{balance} SOL</span>
+              <span className="text-white font-medium">{balance ? Number(ethers.formatUnits(balance,18)).toFixed(4) : 0} BNB  </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-400">Address</span>
               <div className="flex items-center gap-1">
-                <span className="text-white font-medium">{walletAddress}</span>
+                <span className="text-white font-medium">{account.slice(0, 6) + '...' + account.slice(38, 42)}
+                </span>
                 <ExternalLinkIcon className="w-4 h-4 text-gray-400" />
               </div>
             </div>

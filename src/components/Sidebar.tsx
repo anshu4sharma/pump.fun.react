@@ -1,10 +1,20 @@
-import { type Location } from 'react-router'
 import Logo from './Logo'
 import NavigationLinks from './NavigationLinks'
 import SocialLinks from './SocialLinks'
 import WalletSection from './WalletSection'
-
-const Sidebar = ({ location }: { location:  Location<any> }) => {
+import { ethers } from 'ethers'
+import { useEffect } from 'react'
+const Sidebar = ({ location, account, setAccount, balance, setBalance }: { location: any, account: any, setAccount: any, balance: any, setBalance: any }) => {
+  async function connectHandler() {
+    const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+    const account = ethers.getAddress(accounts[0])
+    setAccount(account);
+    const balance = await (window as any).ethereum.request({ method: 'eth_getBalance', params: [account] });
+    setBalance(balance);
+  }
+  useEffect(() => {
+    connectHandler()
+  }, [])
   if (location.pathname === "/") {
     return null;
   }
@@ -21,7 +31,7 @@ const Sidebar = ({ location }: { location:  Location<any> }) => {
         <SocialLinks />
       </div>
       <div className="p-6 pt-4 border-t border-gray-800">
-        <WalletSection />
+        <WalletSection balance={balance} connectHandler={connectHandler} account={account} />
       </div>
     </aside>
   )

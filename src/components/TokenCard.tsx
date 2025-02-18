@@ -1,33 +1,31 @@
 interface TokenCardProps {
   name: string;
   symbol: string;
-  marketCap: string;
-  status: string;  
+  balance: number;
   logoUrl: string;
+  address: string;
 }
 
-const TokenCard = ({ name, symbol, marketCap, logoUrl }: TokenCardProps) => {
+const TokenCard: React.FC<TokenCardProps> = ({ name, symbol, balance, logoUrl, address }) => {
   return (
-    <div className="bg-[#1c1c1c] rounded-lg p-4 border border-gray-800">
-      <div className="flex items-center gap-3 mb-4">
-        <img src={logoUrl} alt={name} className="w-8 h-8 rounded-full" />
-        <div>
-          <h3 className="text-white font-medium">{name}</h3>
-          <p className="text-gray-400 text-sm">{symbol}</p>
+    <div className="bg-gray-900 rounded-2xl p-5 border border-gray-700 cursor-pointer shadow-lg transition-transform transform hover:scale-105 w-full max-w-sm">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <img src={logoUrl} alt={`${name} logo`} className="w-14 h-14 sm:w-12 sm:h-12 rounded-full" />
+        <div className="flex-1 min-w-[120px]">
+          <h3 className="text-white text-lg font-semibold">{name}</h3>
+          <p className="text-gray-400 text-sm uppercase">{symbol}</p>
+          <p className="text-gray-400 text-sm uppercase">{address.slice(0, 8)}...{address.slice(-8)}</p>
         </div>
+        {balance > 0 && (
+        <div className="mt-4 text-center">
+          <p className="text-gray-400 text-sm">Balance</p>
+          <p className="text-yellow-500 text-lg font-medium">{balance}</p>
+        </div>
+      )}
       </div>
-      <div className="flex justify-between items-center">
-        <div>
-          <p className="text-gray-400 text-sm">Market Cap</p>
-          <p className="text-green-500 font-medium">${marketCap}</p>
-        </div>
-        <div>
-          <p className="text-gray-400 text-sm">Status</p>
-          <p className="text-yellow-500">In Bonding Curve</p>
-        </div>
-      </div>
+     
     </div>
   );
 };
 
-export default TokenCard; 
+export default TokenCard;

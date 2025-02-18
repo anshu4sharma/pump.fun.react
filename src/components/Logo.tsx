@@ -8,7 +8,7 @@ const Logo: FC = () => {
         width="32"
         height="32"
         className="rounded-lg"
-        src="https://plotfun.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.005438bc.png&w=64&q=75"
+        src="/logo.webp"
       />
       <h1 className="text-xl font-bold text-white">PLOTBSC.fun</h1>
     </div>

@@ -1,9 +1,20 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const TokenGrid: FC = () => {
   const navigate = useNavigate();
+  const [tokens, setTokens] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchTokens = async () => {
+      const response = await fetch("http://localhost:5000/tokens");
+      const data = await response.json();
+      console.log(data);
+      setTokens(data.tokens);
+    };
+    fetchTokens();
+  }, []);
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-2">
@@ -28,11 +39,11 @@ const TokenGrid: FC = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {[...Array(8)].map((_, index) => (
+        {tokens.length > 0 ? tokens.map((token, index) => (
           <div
             key={index}
             onClick={() => {
-              navigate("/tokens");
+              navigate(`/token/${token?.token}`);
             }}
             className="rounded-lg border text-card-foreground shadow-sm bg-[#1c1c1c] hover:bg-[#252525] transition-colors border-gray-700 p-4 cursor-pointer"
           >
@@ -40,14 +51,14 @@ const TokenGrid: FC = () => {
               <div className="flex items-start gap-4">
                 <div className="rounded-full overflow-hidden bg-gray-800 flex-shrink-0 w-[50px] h-[50px]">
                   <img
-                    src={index % 2 === 0 ? "https://ipfs.io/ipfs/QmdZACb4qSoamBnHwFtuvyCAEK6YWzdVnhzXQZnTKSzU5N" : "https://ipfs.io/ipfs/QmQ7Dbg7jEKNUx43nhVqE2UqadBPWNmzPgcHmK2EipvhaS"}
+                    src={`https://coral-gigantic-snipe-181.mypinata.cloud/ipfs/${token?.imageCID}`}
                     alt="Blue Moon"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-start">
-                    <h3 className="font-bold text-white truncate">Blue Moon</h3>
+                    <h3 className="font-bold text-white truncate">{token?.name}</h3>
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-gray-500">replies</span>
                       <div className="flex items-center gap-1 text-gray-400">
@@ -65,20 +76,21 @@ const TokenGrid: FC = () => {
                         >
                           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                         </svg>
-                        <span>1</span>
+                        <span>0</span>
                       </div>
                     </div>
                   </div>
                   <div className="text-gray-400 text-sm">
                     Market Cap:{" "}
-                    <span className="text-green-500">$36,626.26</span>
+                    <span className="text-green-500">${token?.marketCap}</span>
                   </div>
                 </div>
               </div>
-              <div className="text-white text-sm">Blue moon token</div>
+              <div className="text-white text-sm">Symbol: {token?.ticker?.toUpperCase()}</div>
               <div className="flex items-center gap-2 text-xs text-gray-400">
                 <span>Deployed by:</span>
-                <span>0x5b4a...4e97</span>
+                <span className="hidden md:block">{token?.creator}</span>
+                <span className="block md:hidden">{token?.creator?.slice(0, 16)}...{token?.creator?.slice(-16)}</span>
               </div>
               <div className="flex items-center gap-3 pt-2">
                 <a
@@ -149,7 +161,11 @@ const TokenGrid: FC = () => {
               </div>
             </div>
           </div>
-        ))}
+        )) : <div>
+          <div className="flex flex-col items-center justify-center h-full gap-4">
+            <div className="text-gray-400 font-bold text-center text-5xl mt-10">No tokens found ....</div>
+          </div>
+        </div>}
       </div>
     </div>
   );

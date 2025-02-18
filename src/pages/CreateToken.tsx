@@ -1,4 +1,72 @@
-const CreateToken = () => {
+import { ethers } from "ethers";
+import { useState } from "react";
+
+// Instead, add these constants for the Pinata API
+const PINATA_API_KEY = '42d5b6b54df287ff79bf';
+const PINATA_SECRET_KEY = '69097122a8a3d0b52b4634667cc2302aab4b532f7d84cc4fecdd5ef035d40731';
+
+const CreateToken = ({ fee, provider, factory }: { fee: any, provider: any, factory: any }) => {
+  const [imageFile, setImageFile] = useState<any>(null);
+ // Updated function to upload image to Pinata using fetch
+ const uploadImage = async (file: string | Blob) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
+      method: 'POST',
+      headers: {
+        'pinata_api_key': PINATA_API_KEY,
+        'pinata_secret_api_key': PINATA_SECRET_KEY,
+      },
+      body: formData,
+    });
+
+    const result = await response.json();
+    return result.IpfsHash; // Return the CID (Content Identifier)
+  } catch (error) {
+    console.error('Error uploading image to Pinata:', error);
+    return null;
+  }
+};
+
+// Handler for form submission
+const listHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault(); // Prevent default form submission
+
+  const formData = new FormData(event.currentTarget);
+  const name = formData.get("name");
+  const ticker = formData.get("ticker");
+  const imageFile = formData.get("image");
+
+
+  // Upload image to Pinata and get CID
+  let imageCID = null;
+  if (imageFile) {
+    imageCID = await uploadImage(imageFile);
+    if (!imageCID) {
+      alert("Failed to upload image. Please try again.");
+      return;
+    }
+    // Show the image path or name
+    alert(`Image uploaded successfully! Image CID: ${imageCID}`);
+  }
+
+  // Connect to the signer
+  const signer = await provider.getSigner();
+
+  // Call the `create` function in the smart contract
+  try {
+    const transaction = await factory.connect(signer).create(name, ticker, imageCID, { value: fee });
+    await transaction.wait();
+
+    console.log("Token created successfully! Image CID:", imageCID);
+  } catch (error) {
+    console.error("Error creating token:", error);
+    alert("Failed to create token. Please check the console for details.");
+  }
+};
+
   return (
     <main className="pt-16 lg:pt-0">
       <div className="p-4 lg:p-8">
@@ -9,7 +77,7 @@ const CreateToken = () => {
                 <div className="tracking-tight text-2xl font-bold text-white">Create Token</div>
               </div>
               <div className="p-6 pt-0">
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={listHandler}>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-200">Name</label>
@@ -25,66 +93,27 @@ const CreateToken = () => {
                       <input
                         type="text"
                         className="flex w-full rounded-md border px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-[#252525] border-gray-700 text-white h-9"
-                        name="symbol"
+                        name="ticker"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-200">Description</label>
-                      <textarea
-                        className="flex w-full rounded-md border px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-[#252525] border-gray-700 text-white min-h-[80px] resize-none"
-                        name="description"
-                      ></textarea>
-                    </div>
-                    <div>
                       <div className="flex justify-between items-center">
                         <label className="block text-sm font-medium text-gray-200">Logo</label>
-                        <span className="text-xs text-red-400">* Required (512kb max)</span>
                       </div>
                       <label className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border px-4 py-2 w-full bg-[#252525] border-gray-700 text-gray-200 hover:bg-[#2a2a2a] hover:text-white h-9">
-                        Select File
-                        <input type="file" accept="image/*" required className="hidden" />
+                      {imageFile ? typeof imageFile === 'string' ? imageFile : imageFile.name : 'Please select an image'}
+                        <input  type="file" accept="image/*" required className="hidden" name="image" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
                       </label>
                     </div>
-                    <div className="mt-6 p-4 bg-green-900/10 border border-green-600/20 rounded-lg">
-                      <div className="flex items-start space-x-3">
-                        <button
-                          type="button"
-                          role="checkbox"
-                          aria-checked="false"
-                          data-state="unchecked"
-                          className="peer shrink-0 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1 h-5 w-5 border-2 border-green-500 data-[state=checked]:bg-green-500 data-[state=checked]:text-white"
-                          id="make-purchase"
-                          aria-labelledby="make-purchase-label"
-                        ></button>
-                        <input
-                          type="checkbox"
-                          aria-hidden="true"
-                          tabIndex={0}
-                          style={{ transform: 'translateX(-100%)', position: 'absolute', pointerEvents: 'none', opacity: 0, margin: 0, width: 20, height: 20 }}
-                        />
-                        <div className="space-y-1">
-                          <label id="make-purchase-label" htmlFor="make-purchase" className="text-sm font-medium text-white cursor-pointer">
-                            Make initial purchase
-                          </label>
-                          <p className="text-gray-400 text-xs">The purchase will be processed automatically right after token creation</p>
-                        </div>
-                      </div>
-                    </div>
                   </div>
-                  <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full text-gray-400 hover:text-white hover:bg-[#2a2a2a]" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-down w-4 h-4 mr-2">
-                      <path d="m6 9 6 6 6-6"></path>
-                    </svg>
-                    Show More Options
-                  </button>
                   <div data-orientation="horizontal" role="none" className="shrink-0 h-[1px] w-full my-4 bg-gray-700"></div>
                   <div className="space-y-4">
                     <div className="text-sm text-gray-400">
-                      <p>Creation Fee: 0.001 ETH</p>
+                      <p>Creation Fee: {ethers.formatUnits(fee, 18)} BNB</p>
                     </div>
                     {/* change the button to a gradient button */}
-                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium disabled:opacity-50 h-10" type="submit">
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium h-10" type="submit">
                       Create Token
                     </button>
                   </div>

@@ -56,14 +56,14 @@ const Tokens = () => {
                             24h Volume
                           </div>
                           <div className="text-xs font-semibold text-white">
-                            {0.00000000.toFixed(6)} DOGE
+                            {0.00000000.toFixed(6)} ANSHU
                           </div>
                           <div className="text-xs text-gray-500 truncate max-w-[150px]">${0.7976937.toFixed(6)}</div>
                         </div>
                         <div className="flex flex-col flex-shrink-0">
                           <div className="text-sm text-gray-400">24h High</div>
                           <div className="text-xs font-semibold text-green-400">
-                            {0.000000.toFixed(6)} DOGE
+                            {0.000000.toFixed(6)} ANSHU
                           </div>
                           <div className="text-xs text-gray-500 truncate max-w-[150px]">${0.797693134862.toFixed(6)}</div>
                         </div>
@@ -82,206 +82,191 @@ const Tokens = () => {
                       className="w-full"
                       style={{ height: "min(300px, 50vh)" }}
                     >
-                      <div
-                        className="tv-lightweight-charts"
-                        style={{
-                          overflow: "hidden",
-                          direction: "ltr",
-                          width: "100%",
-                          height: "400px",
-                          userSelect: "none",
-                          WebkitTapHighlightColor: "transparent",
-                        }}
+                      <table
+                        cellSpacing="0"
+                        style={{ height: "400px", width: "100%" }}
                       >
-                        <table
-                          cellSpacing="0"
-                          style={{ height: "400px", width: "100%" }}
-                        >
-                          <tbody>
-                            <tr>
-                              <td style={{ padding: 0 }}></td>
-                              <td
+                        <tbody>
+                          <tr>
+                            <td style={{ padding: 0 }}></td>
+                            <td
+                              style={{
+                                padding: 0,
+                                position: "relative",
+                                width: "100%",
+                                height: "372px",
+                              }}
+                            >
+                              <div
                                 style={{
-                                  padding: 0,
-                                  position: "relative",
                                   width: "100%",
-                                  height: "372px",
+                                  height: "100%",
+                                  position: "relative",
+                                  overflow: "hidden",
                                 }}
                               >
-                                <div
+                                <canvas
+                                  width="810"
+                                  height="465"
                                   style={{
                                     width: "100%",
-                                    height: "100%",
-                                    position: "relative",
-                                    overflow: "hidden",
+                                    height: "372px",
+                                    position: "absolute",
+                                    zIndex: 1,
+                                    left: 0,
+                                    top: 0,
                                   }}
+                                ></canvas>
+                                <canvas
+                                  width="810"
+                                  height="465"
+                                  style={{
+                                    width: "100%",
+                                    height: "372px",
+                                    position: "absolute",
+                                    zIndex: 2,
+                                    left: 0,
+                                    top: 0,
+                                  }}
+                                ></canvas>
+                              </div>
+                              <a
+                                href="https://www.tradingview.com/?utm_medium=lwc-link&amp;utm_campaign=lwc-chart&amp;utm_source=plotfun.vercel.app/token/0x18C4678A5BA24DECF7DFd42ff5355667a7f7480B"
+                                title="Charting by TradingView"
+                                id="tv-attr-logo"
+                                target="_blank"
+                                data-dark=""
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 35 19"
+                                  width="35"
+                                  height="19"
+                                  fill="none"
                                 >
-                                  <canvas
-                                    width="810"
-                                    height="465"
-                                    style={{
-                                      width: "100%",
-                                      height: "372px",
-                                      position: "absolute",
-                                      zIndex: 1,
-                                      left: 0,
-                                      top: 0,
-                                    }}
-                                  ></canvas>
-                                  <canvas
-                                    width="810"
-                                    height="465"
-                                    style={{
-                                      width: "100%",
-                                      height: "372px",
-                                      position: "absolute",
-                                      zIndex: 2,
-                                      left: 0,
-                                      top: 0,
-                                    }}
-                                  ></canvas>
-                                </div>
-                                <style>
-                                  {`a#tv-attr-logo{--fill:#131722;--stroke:#fff;position:absolute;left:10px;bottom:10px;height:19px;width:35px;margin:0;padding:0;border:0;z-index:3;}a#tv-attr-logo[data-dark]{--fill:#D1D4DC;--stroke:#131722;}`}
-                                </style>
-                                <a
-                                  href="https://www.tradingview.com/?utm_medium=lwc-link&amp;utm_campaign=lwc-chart&amp;utm_source=plotfun.vercel.app/token/0x18C4678A5BA24DECF7DFd42ff5355667a7f7480B"
-                                  title="Charting by TradingView"
-                                  id="tv-attr-logo"
-                                  target="_blank"
-                                  data-dark=""
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 35 19"
-                                    width="35"
-                                    height="19"
-                                    fill="none"
+                                  <g
+                                    fillRule="evenodd"
+                                    clipPath="url(#a)"
+                                    clipRule="evenodd"
                                   >
-                                    <g
-                                      fillRule="evenodd"
-                                      clipPath="url(#a)"
-                                      clipRule="evenodd"
-                                    >
+                                    <path
+                                      fill="var(--stroke)"
+                                      d="M2 0H0v10h6v9h21.4l.5-1.3 6-15 1-2.7H23.7l-.5 1.3-.2.6a5 5 0 0 0-7-.9V0H2Zm20 17h4l5.2-13 .8-2h-7l-1 2.5-.2.5-1.5 3.8-.3.7V17Zm-.8-10a3 3 0 0 0 .7-2.7A3 3 0 1 0 16.8 7h4.4ZM14 7V2H2v6h6v9h4V7h2Z"
+                                    ></path>
+                                    <path
+                                      fill="var(--fill)"
+                                      d="M14 2H2v6h6v9h6V2Zm12 15h-7l6-15h7l-6 15Zm-7-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                                    ></path>
+                                  </g>
+                                  <defs>
+                                    <clipPath id="a">
                                       <path
                                         fill="var(--stroke)"
-                                        d="M2 0H0v10h6v9h21.4l.5-1.3 6-15 1-2.7H23.7l-.5 1.3-.2.6a5 5 0 0 0-7-.9V0H2Zm20 17h4l5.2-13 .8-2h-7l-1 2.5-.2.5-1.5 3.8-.3.7V17Zm-.8-10a3 3 0 0 0 .7-2.7A3 3 0 1 0 16.8 7h4.4ZM14 7V2H2v6h6v9h4V7h2Z"
+                                        d="M0 0h35v19H0z"
                                       ></path>
-                                      <path
-                                        fill="var(--fill)"
-                                        d="M14 2H2v6h6v9h6V2Zm12 15h-7l6-15h7l-6 15Zm-7-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                                      ></path>
-                                    </g>
-                                    <defs>
-                                      <clipPath id="a">
-                                        <path
-                                          fill="var(--stroke)"
-                                          d="M0 0h35v19H0z"
-                                        ></path>
-                                      </clipPath>
-                                    </defs>
-                                  </svg>
-                                </a>
-                              </td>
-                              <td style={{ padding: 0 }}>
-                                <div
-                                  style={{
-                                    height: "372px",
-                                    overflow: "hidden",
-                                    width: "56px",
-                                    left: 0,
-                                    position: "relative",
-                                  }}
-                                >
-                                  <canvas
-                                    width="70"
-                                    height="465"
-                                    style={{
-                                      width: "56px",
-                                      height: "372px",
-                                      position: "absolute",
-                                      zIndex: 1,
-                                      left: 0,
-                                      top: 0,
-                                    }}
-                                  ></canvas>
-                                  <canvas
-                                    width="70"
-                                    height="465"
-                                    style={{
-                                      width: "56px",
-                                      height: "372px",
-                                      position: "absolute",
-                                      zIndex: 2,
-                                      left: 0,
-                                      top: 0,
-                                    }}
-                                  ></canvas>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style={{ padding: 0 }}></td>
-                              <td
+                                    </clipPath>
+                                  </defs>
+                                </svg>
+                              </a>
+                            </td>
+                            <td style={{ padding: 0 }}>
+                              <div
                                 style={{
-                                  height: 28,
-                                  padding: 0,
-                                  width: "100%",
+                                  height: "372px",
+                                  overflow: "hidden",
+                                  width: "56px",
+                                  left: 0,
+                                  position: "relative",
                                 }}
                               >
-                                <div
-                                  style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    position: "relative",
-                                    overflow: "hidden",
-                                  }}
-                                >
-                                  <canvas
-                                    width="810"
-                                    height="35"
-                                    style={{
-                                      width: "100%",
-                                      height: "28px",
-                                      position: "absolute",
-                                      zIndex: 1,
-                                      left: 0,
-                                      top: 0,
-                                    }}
-                                  ></canvas>
-                                  <canvas
-                                    width="810"
-                                    height="35"
-                                    style={{
-                                      width: "100%",
-                                      height: "28px",
-                                      position: "absolute",
-                                      zIndex: 2,
-                                      left: 0,
-                                      top: 0,
-                                    }}
-                                  ></canvas>
-                                </div>
-                              </td>
-                              <td style={{ padding: 0 }}>
-                                <div
+                                <canvas
+                                  width="70"
+                                  height="465"
                                   style={{
                                     width: "56px",
-                                    height: 28,
-                                    overflow: "hidden",
+                                    height: "372px",
+                                    position: "absolute",
+                                    zIndex: 1,
+                                    left: 0,
+                                    top: 0,
                                   }}
-                                >
-                                  <canvas
-                                    width="70"
-                                    height="35"
-                                    style={{ width: "56px", height: 28 }}
-                                  ></canvas>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                                ></canvas>
+                                <canvas
+                                  width="70"
+                                  height="465"
+                                  style={{
+                                    width: "56px",
+                                    height: "372px",
+                                    position: "absolute",
+                                    zIndex: 2,
+                                    left: 0,
+                                    top: 0,
+                                  }}
+                                ></canvas>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style={{ padding: 0 }}></td>
+                            <td
+                              style={{
+                                height: 28,
+                                padding: 0,
+                                width: "100%",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  position: "relative",
+                                  overflow: "hidden",
+                                }}
+                              >
+                                <canvas
+                                  width="810"
+                                  height="35"
+                                  style={{
+                                    width: "100%",
+                                    height: "28px",
+                                    position: "absolute",
+                                    zIndex: 1,
+                                    left: 0,
+                                    top: 0,
+                                  }}
+                                ></canvas>
+                                <canvas
+                                  width="810"
+                                  height="35"
+                                  style={{
+                                    width: "100%",
+                                    height: "28px",
+                                    position: "absolute",
+                                    zIndex: 2,
+                                    left: 0,
+                                    top: 0,
+                                  }}
+                                ></canvas>
+                              </div>
+                            </td>
+                            <td style={{ padding: 0 }}>
+                              <div
+                                style={{
+                                  width: "56px",
+                                  height: 28,
+                                  overflow: "hidden",
+                                }}
+                              >
+                                <canvas
+                                  width="70"
+                                  height="35"
+                                  style={{ width: "56px", height: 28 }}
+                                ></canvas>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -294,7 +279,7 @@ const Tokens = () => {
                       <h3 className="text-xl font-semibold text-white">BLUE</h3>
                       <div className="text-gray-400">
                         <div className="text-right">
-                          <div>{0.000000001677.toFixed(6)} DOGE</div>
+                          <div>{0.000000001677.toFixed(6)} ANSHU</div>
                           <div className="text-xs text-gray-500">
                             ≈ $0.000163
                           </div>
@@ -321,7 +306,7 @@ const Tokens = () => {
                         <Tabs.Content value="buy" className="mt-4">
                           <div className="text-sm text-gray-400 mb-4">
                             <div>
-                              <span>DOGE Balance: 0</span>
+                              <span>ANSHU Balance: 0</span>
                               <span className="text-xs text-gray-500 ml-2">
                                 ≈ $0.00
                               </span>
@@ -358,10 +343,10 @@ const Tokens = () => {
                             </button>
                           </div>
                           <button
-                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full mt-4 h-12 bg-yellow-500 hover:bg-yellow-600 text-white"
+                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full mt-4 h-12 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600"
                             disabled
                           >
-                            Approve DOGE
+                            Approve ANSHU
                           </button>
                         </Tabs.Content>
 
@@ -405,10 +390,10 @@ const Tokens = () => {
                             </button>
                           </div>
                           <button
-                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full mt-4 h-12 bg-yellow-500 hover:bg-yellow-600 text-white"
+                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full mt-4 h-12 text-white bg-gradient-to-r from-purple-500 to-blue-500"
                             disabled
                           >
-                            Approve DOGE
+                            Approve ANSHU
                           </button>
                         </Tabs.Content>
                       </Tabs.Root>

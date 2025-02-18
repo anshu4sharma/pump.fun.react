@@ -84,56 +84,7 @@ const Home: React.FC = () => {
             </div> */}
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                type="button"
-                className="p-2 rounded-lg text-gray-400 hover:text-white focus:outline-none"
-              >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
 
-        {/* Mobile Menu (hidden by default) */}
-        <div className="hidden md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link
-              to="/create-token"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-[#1a1b1e]"
-            >
-              Create Token
-            </Link>
-            <Link
-              to="/tokens"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-[#1a1b1e]"
-            >
-              Explore
-            </Link>
-            <Link
-              to="/docs"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-[#1a1b1e]"
-            >
-              Documentation
-            </Link>
-            <Link
-              to="/dashboard"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-[#1a1b1e]"
-            >
-              Dashboard
-            </Link>
           </div>
         </div>
       </nav>
@@ -183,23 +134,12 @@ const Home: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
               >
+
                 <Link
-                  to="/create-token"
-                  className="group relative px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg font-semibold text-white overflow-hidden transition-all hover:scale-105"
+                  to="/dashboard"
+                  className="px-8 py-4 bg-[#1a1b1e] rounded-lg font-semibold text-white border-2 border-transparent bg-gradient-to-r from-purple-500/20 to-blue-500/20 hover:bg-[#1a1b1e]/80 transition-all hover:scale-105 cursor-pointer relative after:absolute after:inset-0 after:p-[2px] after:rounded-lg after:bg-gradient-to-r after:from-purple-500 after:to-blue-500 after:-z-10"
                 >
-                  <div className="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors" />
-                  <span className="relative flex items-center justify-center">
-                    Create Token
-                    <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </span>
-                </Link>
-                <Link
-                  to="/tokens"
-                  className="px-8 py-4 bg-[#1a1b1e] rounded-lg font-semibold text-white border border-gray-800 hover:bg-[#1a1b1e]/80 transition-all hover:scale-105"
-                >
-                  Explore Tokens
+                  Explore
                 </Link>
               </motion.div>
             </motion.div>
@@ -321,7 +261,7 @@ const Home: React.FC = () => {
       <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-xl font-bold text-white mb-4">TokenForge</h3>
+            <h3 className="text-xl font-bold text-white mb-4">PlotBsc</h3>
             <p className="text-gray-400 mb-4">Create, deploy and manage BSC tokens with powerful features and security measures.</p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white">
