@@ -12,16 +12,19 @@ import Home from "./pages/Home";
 import clsx from "clsx";
 import Token from "./pages/Token";
 import CreateTestToken from "./pages/CreateTestToken.tsx";
-import Factory from "./abis/Factory.json"
-import config from "./config.json"
-import { BrowserProvider, Contract, ethers } from "ethers";
+import Factory from "./abis/Factory.json";
+import { BrowserProvider, Contract, ethers, formatUnits } from "ethers";
+import useTokenStore from './store/useTokenStore';
+import { EXTERNAL_RPC, factoryABI, factoryAddress } from './constant';
+import { Toaster } from 'react-hot-toast';
+
 const App: React.FC = () => {
   const [provider, setProvider] = useState<BrowserProvider | null>(null)
   const [account, setAccount] = useState<string | null>(null)
   const [factory, setFactory] = useState<Contract | null>(null)
   const [fee, setFee] = useState(0)
   const [balance, setBalance] = useState(0)
-
+  const { setDeployedTokens, setTokenBalances, setTokenInfo } = useTokenStore();
 
   async function loadBlockchainData() {
     try {
@@ -79,7 +82,6 @@ const App: React.FC = () => {
       const network = await provider.getNetwork()
       console.log(network.chainId, "network.chainId");
       // Create reference to Factory contract
-      const factoryAddress = config[network.chainId.toString() as keyof typeof config].factory.address;
       const factory = new ethers.Contract(factoryAddress, Factory, provider);
       setFactory(factory);
       console.log(factory, "factory");
@@ -95,6 +97,52 @@ const App: React.FC = () => {
   useEffect(() => {
     loadBlockchainData()
   }, [])
+
+  useEffect(() => {
+    const fetchTokensAndBalances = async () => {
+      if (!account) return;
+
+      const provider = new ethers.JsonRpcProvider(EXTERNAL_RPC);
+      try {
+        const factoryContract = new ethers.Contract(factoryAddress, factoryABI, provider);
+
+        const totalTokens = await factoryContract.totalTokens();
+        const tokenAddresses = await Promise.all(
+          Array.from({ length: Number(totalTokens) }, (_, i) => 
+            factoryContract.tokens(i)
+          )
+        );
+
+        setDeployedTokens(tokenAddresses); // Update Zustand store
+
+        const balances: { [key: string]: string } = {};
+        const tokenData: { [key: string]: { name: string, symbol: string, imageCID: string } } = {};
+
+        await Promise.all(
+          tokenAddresses.map(async (tokenAddress, i) => {
+            const tokenContract = new ethers.Contract(tokenAddress, factoryABI, provider);
+            const [userBalance, name, symbol, imageCID] = await Promise.all([
+              tokenContract.balanceOf(account),
+              tokenContract.name(),
+              tokenContract.symbol(),
+              factoryContract.getImageCid(i)
+            ]);
+
+            balances[tokenAddress] = formatUnits(userBalance, 18);
+            tokenData[tokenAddress] = { name, symbol, imageCID };
+          })
+        );
+
+        setTokenBalances(balances); // Update Zustand store
+        setTokenInfo(tokenData); // Update Zustand store
+      } catch (error) {
+        console.error('Error fetching tokens or balances:', error);
+      }
+    };
+
+    fetchTokensAndBalances();
+  }, [account, setDeployedTokens, setTokenBalances, setTokenInfo]);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -114,6 +162,7 @@ const App: React.FC = () => {
           isOpen={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}
         />
+      <Toaster />
 
         {/* Main Content */}
         <main className={clsx(location.pathname === "/" ? "" : "lg:pl-64 pt-16 lg:pt-0")}>
@@ -123,7 +172,7 @@ const App: React.FC = () => {
             <Route path="/dashboard" element={<Main />} />
             <Route path="/create-token" element={<CreateToken  fee={fee} provider={provider} factory={factory} />} />
             <Route path="/create-test-token" element={<CreateTestToken />} />
-            <Route path="/profile" element={<Profile provider={provider} account={account} />} />
+            <Route path="/profile" element={<Profile balance={balance} account={account} />} />
             <Route path="/token/:tokenId" element={<Token  factory={factory} provider={provider} />} />
             <Route path="/tokens" element={<Tokens />} />
           </Routes>

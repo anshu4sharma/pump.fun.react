@@ -3,7 +3,6 @@ import { XIcon } from "lucide-react";
 import Logo from "./Logo";
 import NavigationLinks from "./NavigationLinks";
 import SocialLinks from "./SocialLinks";
-import WalletSection from "./WalletSection";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -36,7 +35,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           <div className="flex justify-center gap-6 mb-4">
             <SocialLinks />
           </div>
-          <WalletSection />
+          {/* <WalletSection  /> */}
         </div>
       </div>
     </div>

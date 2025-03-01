@@ -131,7 +131,6 @@ const Tokens = () => {
                                 ></canvas>
                               </div>
                               <a
-                                href="https://www.tradingview.com/?utm_medium=lwc-link&amp;utm_campaign=lwc-chart&amp;utm_source=plotfun.vercel.app/token/0x18C4678A5BA24DECF7DFd42ff5355667a7f7480B"
                                 title="Charting by TradingView"
                                 id="tv-attr-logo"
                                 target="_blank"

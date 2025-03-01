@@ -3,7 +3,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
 import ApexCharts from 'apexcharts';
 import { ethers, formatEther } from "ethers";
-
+import tokenABI from "../abis/Token.json";
+import { factoryAddress } from "../constant";
+import useTokenStore from '../store/useTokenStore'; // Import the Zustand store
+import { toast } from 'react-hot-toast';
 interface Token {
   token: string;
   name: string;
@@ -32,9 +35,13 @@ interface TokenProps {
 }
 
 const Token = ({ factory, provider }: TokenProps) => {
+  const { tokenBalances, } = useTokenStore(); // Access Zustand store state
+
   const { tokenId } = useParams();
   const chartRef = useRef<HTMLDivElement>(null);
   const [token, setToken] = useState<Token | null>(null);
+  const [isBuying, setIsBuying] = useState(false);
+  const [isSelling, setIsSelling] = useState(false);
   console.log(token, "token");
 
   const [priceUpdates, setPriceUpdates] = useState<PriceUpdates>({
@@ -70,66 +77,61 @@ const Token = ({ factory, provider }: TokenProps) => {
   const [target, setTarget] = useState<bigint>(0n)
   const [limit, setLimit] = useState<bigint>(0n)
 
-  async function buyHandler(form: { get: (arg0: string) => any; }) {
-    try {
-      const amount = Number(form.get("amount"))
-      console.log(amount, "amount");
-      // Validate amount
-      if (!amount || amount <= 0) {
-        alert("Please enter a valid amount")
-        return
-      }
+  async function buyHandler(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const amount = Number(formData.get("amount"));
 
-      // Convert totalSold to same decimal places as target for comparison
-      const totalSoldInWei = ethers.parseUnits(token!.totalSold, 18)
-      const targetInWei = ethers.parseUnits(target.toString(), 18)
-      console.log(totalSoldInWei, "totalSold in wei");
-      console.log(targetInWei, "target");
-
-      // Check if target is reached by comparing wei values
-      if (totalSoldInWei >= targetInWei) {
-        alert("Sale target has been reached")
-        return
-      }
-
-      // Convert amount to wei for limit comparison
-      const amountInWei = ethers.parseUnits(amount.toString(), 18)
-      if (amountInWei > limit) {
-        alert("Amount exceeds token limit")
-        return
-      }
-
-      const cost = await factory.getCost(totalSoldInWei)
-      const totalCost = cost * BigInt(amount)
-
-      const signer = await provider.getSigner()
-      console.log(signer, "signer");
-      // log the total cost
-      console.log(totalCost, "total cost")
-      console.log(amountInWei, "amount in wei")
-
-      // If estimation succeeds, proceed with actual transaction
-      // Calculate trading fee (5%)
-      const tradingFee = (totalCost * 5n) / 100n
-      const totalWithFee = totalCost + tradingFee
-      console.log(totalWithFee, "totalWithFee");
-      const transaction = await factory.connect(signer).buy(
-        token!.token,
-        amountInWei,
-        {
-          value: totalWithFee,
-          gasLimit: 5000000 // Set fixed gas limit
-        }
-      )
-
-      const receipt = await transaction.wait();
-      if (receipt.status === 0) {
-        throw new Error("Transaction execution reverted");
-      }
-    } catch (error) {
-      console.error("Error in buy transaction:", error)
-      // alert("Transaction failed. Please try again.")
+    if (!amount || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
     }
+
+    // Wrap the buy logic in toast.promise
+    await toast.promise(
+      (async () => {
+        setIsBuying(true);
+
+        const totalSoldInWei = ethers.parseUnits(token!.totalSold, 18);
+        const targetInWei = ethers.parseUnits(target.toString(), 18);
+
+        if (totalSoldInWei >= targetInWei) {
+          throw new Error("Sale target has been reached");
+        }
+
+        const amountInWei = ethers.parseUnits(amount.toString(), 18);
+        if (amountInWei > limit) {
+          throw new Error("Amount exceeds token limit");
+        }
+
+        const cost = await factory.getCost(totalSoldInWei);
+        const totalCost = cost * BigInt(amount);
+        const tradingFee = (totalCost * 5n) / 100n;
+        const totalWithFee = totalCost + tradingFee;
+
+        const signer = await provider.getSigner();
+        const transaction = await factory.connect(signer).buy(
+          token?.token,
+          amountInWei,
+          {
+            value: totalWithFee,
+            gasLimit: 5000000,
+          }
+        );
+
+        const receipt = await transaction.wait();
+        if (receipt.status === 0) {
+          throw new Error("Transaction execution reverted");
+        }
+      })(),
+      {
+        loading: "Processing your purchase...",
+        success: "Purchase successful!",
+        error: () => `Purchase failed`,
+      }
+    ).finally(() => {
+      setIsBuying(false);
+    });
   }
 
   async function getSaleDetails() {
@@ -228,14 +230,18 @@ const Token = ({ factory, provider }: TokenProps) => {
           name: "Price",
           data: priceUpdates.priceUpdates.map((priceUpdate: PriceUpdate) => {
             return {
-              x: new Date(priceUpdate.timestamp).toLocaleString(),
+              x: new Date(priceUpdate.timestamp).toLocaleString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+              }),
               y: formatEther(Number(priceUpdate.price)),
             };
           }),
           color: "#1A56DB",
         }
 
-      ], 
+      ],
 
     };
 
@@ -255,6 +261,61 @@ const Token = ({ factory, provider }: TokenProps) => {
       renderChart();
     }
   }, [renderChart, token]);
+
+  async function sellHandler(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const amount = Number(formData.get("amount"));
+
+    if (!amount || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    // Wrap the sell logic in toast.promise
+    await toast.promise(
+      (async () => {
+        setIsSelling(true);
+
+        const signer = await provider.getSigner();
+        const amountInWei = ethers.parseUnits(amount.toString(), 18);
+
+        const saleData = await factory.getTokenSale(0);
+        if (!saleData.isOpen) {
+          throw new Error("Sale is closed");
+        }
+
+        const tokenContract = new ethers.Contract(token!.token, tokenABI, signer);
+        const tokenBalance = await tokenContract.balanceOf(signer.address);
+
+        if (amountInWei > tokenBalance) {
+          throw new Error("Insufficient token balance");
+        }
+
+        const allowance = await tokenContract.allowance(signer.address, factoryAddress);
+        if (allowance < amountInWei) {
+          const approvalTx = await tokenContract.approve(factoryAddress, amountInWei);
+          await approvalTx.wait();
+        }
+
+        const transaction = await factory.connect(signer).sell(token!.token, amountInWei, {
+          gasLimit: 5000000,
+        });
+
+        const receipt = await transaction.wait();
+        if (receipt.status === 0) {
+          throw new Error("Transaction execution reverted");
+        }
+      })(),
+      {
+        loading: "Processing your sale...",
+        success: "Sale successful!",
+        error: () => `Sale failed`,
+      }
+    ).finally(() => {
+      setIsSelling(false);
+    });
+  }
 
   return (
     <>
@@ -312,7 +373,7 @@ const Token = ({ factory, provider }: TokenProps) => {
                               Total Sold
                             </div>
                             <div className="text-xs font-semibold text-white">
-                              {(token?.totalSold)}
+                              {Number(token?.totalSold).toFixed(2)}
                             </div>
                           </div>
                           <div className="flex flex-col flex-shrink-0">
@@ -371,9 +432,9 @@ const Token = ({ factory, provider }: TokenProps) => {
                           <Tabs.Content value="buy" className="mt-4">
                             <div className="text-sm text-gray-400 mb-4">
                               <div>
-                                <span>{token?.name} Balance: 0</span>
-                                <span className="text-xs text-gray-500 ml-2">
-                                  ≈ ${formatEther(Number(token?.totalRaised))}
+                                <span> Balance: </span>
+                                <span className="text-xs text-white ml-2">
+                                  {tokenBalances[token?.token] ? tokenBalances[token?.token] : 0}
                                 </span>
                               </div>
                             </div>
@@ -389,24 +450,26 @@ const Token = ({ factory, provider }: TokenProps) => {
                                 ></div>
                               </div>
                               <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>Sold: {token?.totalSold} </span>
+                                <span>Sold: {Number(token?.totalSold).toFixed(2)} </span>
                                 <span>Target: 100,000 tokens</span>
                               </div>
                             </div>
-                            <form action={buyHandler} className="relative mt-4">
+                            <form onSubmit={buyHandler} className="relative mt-4">
                               <input
                                 type="number"
                                 name="amount"
                                 className="flex w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 text-white"
                                 step="0.000001"
                                 placeholder="Amount"
+                                disabled={isBuying}
                               />
 
                               <button
                                 className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full mt-4 h-12 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600"
                                 type="submit"
+                                disabled={isBuying}
                               >
-                                Buy {token?.ticker}
+                                {isBuying ? "Buying..." : `Buy ${token?.ticker}`}
                               </button>
                             </form>
                           </Tabs.Content>
@@ -414,9 +477,9 @@ const Token = ({ factory, provider }: TokenProps) => {
                           <Tabs.Content value="sell" className="mt-4">
                             <div className="text-sm text-gray-400 mb-4">
                               <div>
-                                <span>{token?.name} Balance: 0</span>
-                                <span className="text-xs text-gray-500 ml-2">
-                                  ≈ $0.00
+                                <span> Balance: </span>
+                                <span className="text-xs text-white ml-2">
+                                  {tokenBalances[token?.token] ? tokenBalances[token?.token] : 0}
                                 </span>
                               </div>
                             </div>
@@ -432,31 +495,30 @@ const Token = ({ factory, provider }: TokenProps) => {
                                 ></div>
                               </div>
                               <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>Sold: {token?.totalSold} tokens</span>
+                                <span>Sold: {Number(token?.totalSold).toFixed(2)}</span>
                                 <span>Target: 100,000 tokens</span>
                               </div>
                             </div>
-                            <div className="relative mt-4">
+                            <form onSubmit={sellHandler} className="relative mt-4" >
                               <input
                                 type="number"
-                                className="flex w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-[#252525] border-gray-700 text-white h-12 pr-24 placeholder:text-gray-500"
+                                name="amount"
+                                className="flex w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 text-white"
                                 step="0.000001"
-                                placeholder="Amount in cbBTC"
+                                placeholder="Amount"
+                                disabled={Number(tokenBalances[token?.token]) === 0 || isSelling}
                               />
+
                               <button
-                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 py-2 absolute right-2 top-1/2 -translate-y-1/2 h-6 px-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700"
-                                type="button"
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full mt-4 h-12 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600"
+                                type="submit"
+                                disabled={Number(tokenBalances[token?.token]) === 0 || isSelling}
                               >
-                                MAX
+                                {isSelling ? "Selling..." : `Sell ${token?.ticker}`}
                               </button>
-                            </div>
-                            <button
-                              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full mt-4 h-12 text-white bg-gradient-to-r from-purple-500 to-blue-500"
-                              disabled
-                            >
-                              Approve {token?.name}
-                            </button>
+                            </form>
                           </Tabs.Content>
+
                         </Tabs.Root>
                       </div>
                     </div>

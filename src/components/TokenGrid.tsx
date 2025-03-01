@@ -11,7 +11,7 @@ const TokenGrid: FC = () => {
       const response = await fetch("http://localhost:5000/tokens");
       const data = await response.json();
       console.log(data);
-      setTokens(data.tokens);
+      setTokens(data.tokens || []);
     };
     fetchTokens();
   }, []);

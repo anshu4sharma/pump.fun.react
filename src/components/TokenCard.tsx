@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 interface TokenCardProps {
   name: string;
   symbol: string;
@@ -14,7 +16,7 @@ const TokenCard: React.FC<TokenCardProps> = ({ name, symbol, balance, logoUrl, a
         <div className="flex-1 min-w-[120px]">
           <h3 className="text-white text-lg font-semibold">{name}</h3>
           <p className="text-gray-400 text-sm uppercase">{symbol}</p>
-          <p className="text-gray-400 text-sm uppercase">{address.slice(0, 8)}...{address.slice(-8)}</p>
+          <Link to={`/token/${address}`} className="text-gray-400 text-sm uppercase">{address?.slice(0, 8)}...{address?.slice(-8)}</Link>
         </div>
         {balance > 0 && (
         <div className="mt-4 text-center">
